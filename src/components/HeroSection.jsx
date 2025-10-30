@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const ROOM_IMAGE = 'https://images.unsplash.com/photo-1505691723518-36a5ac3b2c5a?q=80&w=1600&auto=format&fit=crop';
 const SOFA_IMAGE = 'https://images.unsplash.com/photo-1549187774-b4e9b0445b41?q=80&w=1200&auto=format&fit=crop';
 
-const HeroSection = () => {
+const HeroSection = ({ onUploadClick }) => {
   const [sofaVisible, setSofaVisible] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const HeroSection = () => {
             See furniture from top stores in your actual space before you buy. Upload a photo to start the magic.
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <button className="button-primary">
+            <button className="button-primary" onClick={onUploadClick}>
               Upload Your Room Photo
             </button>
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const UploadModal = ({ open, onClose, onFileSelected }) => {
+const UploadModal = ({ open, onClose, onFileSelected, onContinue }) => {
   const [dragOver, setDragOver] = useState(false);
   const [preview, setPreview] = useState(null);
   const inputRef = useRef(null);
@@ -16,8 +16,9 @@ const UploadModal = ({ open, onClose, onFileSelected }) => {
   const handleFiles = (files) => {
     const file = files && files[0];
     if (!file) return;
-    setPreview(URL.createObjectURL(file));
-    if (onFileSelected) onFileSelected(file);
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+    if (onFileSelected) onFileSelected(file, url);
   };
 
   return (
@@ -56,7 +57,7 @@ const UploadModal = ({ open, onClose, onFileSelected }) => {
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 14 }}>
           <button onClick={onClose} style={{ background: 'transparent', border: 0, padding: '10px 14px', cursor: 'pointer' }}>Cancel</button>
-          <button className="button-primary" onClick={onClose}>Continue</button>
+          <button className="button-primary" onClick={() => { if (onContinue) onContinue(); onClose(); }}>Continue</button>
         </div>
       </div>
     </div>

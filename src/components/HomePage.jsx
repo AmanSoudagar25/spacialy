@@ -7,9 +7,13 @@ import CustomStudio from './CustomStudio';
 import Testimonials from './Testimonials';
 import FinalCTA from './FinalCTA';
 import UploadModal from './UploadModal';
+import AnalysisPanel from './AnalysisPanel';
 
 const HomePage = () => {
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedUrl, setUploadedUrl] = useState('');
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   const onUploadClick = () => setUploadOpen(true);
 
@@ -20,9 +24,15 @@ const HomePage = () => {
       <HowItWorks />
       <ShowcaseSlider />
       <CustomStudio />
+      {showAnalysis && <AnalysisPanel uploadedUrl={uploadedUrl} />}
       <Testimonials />
       <FinalCTA onUploadClick={onUploadClick} />
-      <UploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} onFileSelected={(f) => { /* placeholder for future */ }} />
+      <UploadModal
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onFileSelected={(file, url) => { setUploadedFile(file); setUploadedUrl(url); }}
+        onContinue={() => setShowAnalysis(true)}
+      />
     </main>
   );
 };

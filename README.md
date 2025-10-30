@@ -40,3 +40,38 @@ git push -u origin main
 - Deploy → obtain your live URL
 
 Subsequent changes: push to GitHub; Vercel auto-builds previews and production.
+
+## n8n + Gemini Integration (optional)
+If you have an n8n webhook that triggers a workflow to analyze the uploaded image (e.g., via Google Gemini), set this env var in Vite:
+
+- Create `/.env.local` in the project root with:
+```
+VITE_N8N_WEBHOOK_URL=https://<your-n8n-host>/webhook/<id>
+```
+
+Client sends JSON like:
+```json
+{
+  "filename": "room.jpg",
+  "mimeType": "image/jpeg",
+  "base64": "<base64-string>",
+  "metadata": { "source": "web", "ts": 1710000000000 }
+}
+```
+
+Expected n8n response (example):
+```json
+{
+  "analysis": {
+    "style": "Modern Minimalist",
+    "colorPalette": ["#cdd7df", "#0e7c86", "#f5f5f5", "#1c1f24"],
+    "lighting": "Soft daylight from left",
+    "notes": "..."
+  },
+  "recommendations": [
+    { "id": "sofa-1", "name": "..", "price": "..", "store": "Amazon", "affiliateUrl": "..", "image": ".." }
+  ]
+}
+```
+
+If `VITE_N8N_WEBHOOK_URL` is not set, the app falls back to a local mock analysis.

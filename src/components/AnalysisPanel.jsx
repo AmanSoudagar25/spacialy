@@ -7,19 +7,21 @@ const ColorSwatch = ({ color }) => (
   <div title={color} style={{ width: 28, height: 28, borderRadius: 6, background: color, border: '1px solid rgba(0,0,0,0.06)' }} />
 );
 
-const AnalysisPanel = ({ uploadedUrl }) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+const AnalysisPanel = ({ uploadedUrl, analysisData }) => {
+  const [loading, setLoading] = useState(!analysisData);
+  const [data, setData] = useState(analysisData || null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (analysisData) { setData(analysisData); setLoading(false); return; }
+    if (!uploadedUrl) return;
     let mounted = true;
     setLoading(true);
     analyzeRoom()
       .then((d) => { if (mounted) { setData(d); setLoading(false); } })
       .catch((e) => { if (mounted) { setError(e.message || 'Error'); setLoading(false); } });
     return () => { mounted = false; };
-  }, [uploadedUrl]);
+  }, [uploadedUrl, analysisData]);
 
   if (!uploadedUrl) return null;
 

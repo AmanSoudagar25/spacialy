@@ -7,23 +7,30 @@ const HeroSection = () => {
   const [sofaVisible, setSofaVisible] = useState(false);
 
   useEffect(() => {
+    const timeoutIds = new Set();
     const id = setInterval(() => {
       setSofaVisible(true);
-      setTimeout(() => setSofaVisible(false), 2000);
+      const hideId = setTimeout(() => setSofaVisible(false), 2000);
+      timeoutIds.add(hideId);
     }, 3600);
-    setTimeout(() => setSofaVisible(true), 400); // initial fade-in
-    return () => clearInterval(id);
+    const initialId = setTimeout(() => setSofaVisible(true), 400); // initial fade-in
+    timeoutIds.add(initialId);
+    return () => {
+      clearInterval(id);
+      timeoutIds.forEach((tid) => clearTimeout(tid));
+      timeoutIds.clear();
+    };
   }, []);
 
   return (
-    <section className="section" style={{ paddingTop: 88 }}>
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 32, alignItems: 'center' }}>
+    <section className="section" style={{ paddingTop: 24 }}>
+      <div className="container grid-hero">
         <div>
           <h1 className="h1">Your Room, Reimagined.</h1>
           <p className="p subtle" style={{ marginBottom: 24 }}>
             See furniture from top stores in your actual space before you buy. Upload a photo to start the magic.
           </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <button className="button-primary">
               Upload Your Room Photo
             </button>

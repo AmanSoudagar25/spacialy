@@ -10,19 +10,23 @@ const CustomStudio = () => {
 
   useEffect(() => {
     let i = 0;
+    let afterTypeTimeout = null;
     const interval = setInterval(() => {
       setTyped(fullText.slice(0, i + 1));
       i++;
       if (i === fullText.length) {
         clearInterval(interval);
-        setTimeout(() => setShowStaged(true), 600);
+        afterTypeTimeout = setTimeout(() => setShowStaged(true), 600);
       }
     }, 35);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (afterTypeTimeout) clearTimeout(afterTypeTimeout);
+    };
   }, []);
 
   return (
-    <section className="section section-muted">
+    <section id="custom" className="section section-muted">
       <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, alignItems: 'center' }}>
         <div>
           <h2 className="h2">Can't Find The Perfect Piece? Invent It.</h2>

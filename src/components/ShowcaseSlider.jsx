@@ -8,7 +8,7 @@ const ShowcaseSlider = () => {
   const clamp = (v) => Math.max(0, Math.min(100, v));
 
   return (
-    <section className="section">
+    <section id="examples" className="section">
       <div className="container">
         <h2 className="h2" style={{ textAlign: 'center', marginBottom: 24 }}>Drag to See the Transformation.</h2>
 
@@ -32,7 +32,7 @@ const ShowcaseSlider = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', alignItems: 'center', marginTop: 18, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', alignItems: 'center', marginTop: 20, flexWrap: 'wrap' }}>
           <div className="subtle">Featuring Products From Your Favorite Stores:</div>
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style={{ height: 22 }} />
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/13/Flipkart_logo.png" alt="Flipkart" style={{ height: 22 }} />

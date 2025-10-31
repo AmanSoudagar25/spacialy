@@ -14,24 +14,33 @@ const HomePage = () => {
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedUrl, setUploadedUrl] = useState('');
+  const [userLocation, setUserLocation] = useState('');
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [analysisData, setAnalysisData] = useState(null);
 
   const onUploadClick = () => setUploadOpen(true);
 
-  const handleContinue = async () => {
+  const handleContinue = async ({ location }) => {
+    setUserLocation(location);
     setShowAnalysis(true);
     if (uploadedFile && import.meta.env.VITE_N8N_WEBHOOK_URL) {
       try {
-        const result = await sendToN8n(uploadedFile);
+        const result = await sendToN8n(uploadedFile, location);
         if (!result._skipped) setAnalysisData(result);
       } catch (e) {
-        // Fallback to mock handled inside AnalysisPanel if no data
         console.error('n8n error', e);
         setAnalysisData(null);
       }
     } else {
-      setAnalysisData(null);
+      // If env not set, still try default production (sendToN8n uses default), else AnalysisPanel falls back
+      try {
+        if (uploadedFile) {
+          const result = await sendToN8n(uploadedFile, location);
+          if (!result._skipped) setAnalysisData(result);
+        }
+      } catch (e) {
+        setAnalysisData(null);
+      }
     }
   };
 

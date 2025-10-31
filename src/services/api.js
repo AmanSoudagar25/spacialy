@@ -4,13 +4,15 @@ export async function analyzeRoom() {
   if (!res.ok) throw new Error('Failed to analyze');
   return await res.json();
 }
-export async function sendToN8n(file) {
+
+export async function sendToN8n(file, location) {
   const webhook = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://amansworkspace.app.n8n.cloud/webhook/spacialy/analyze';
   const base64 = await fileToBase64(file);
   const payload = {
     filename: file.name,
     mimeType: file.type || 'application/octet-stream',
     base64,
+    location,
     metadata: { source: 'web', ts: Date.now() },
   };
   const res = await fetch(webhook, {
@@ -24,6 +26,7 @@ export async function sendToN8n(file) {
   }
   return await res.json();
 }
+
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

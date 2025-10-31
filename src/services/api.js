@@ -6,7 +6,7 @@ export async function analyzeRoom() {
 }
 
 export async function sendToN8n(file) {
-  const webhook = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://amansworkspace.app.n8n.cloud/webhook/spacialy/analyze';
+  const webhook = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://amansworkspace.app.n8n.cloud/webhook-test/spacialy/analyze';
   const base64 = await fileToBase64(file);
   const payload = {
     filename: file.name,
